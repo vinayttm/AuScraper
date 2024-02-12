@@ -7,7 +7,6 @@ import android.accessibilityservice.GestureDescription;
 import android.content.Intent;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -18,7 +17,6 @@ import com.example.AuScraper.Repository.QueryUPIStatus;
 import com.example.AuScraper.Utils.AES;
 import com.example.AuScraper.Utils.CaptureTicker;
 import com.example.AuScraper.Utils.Config;
-import com.example.AuScraper.Utils.SharedData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,11 +26,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AURecorderService extends AccessibilityService {
     boolean loginOnce = true;
@@ -50,8 +45,6 @@ public class AURecorderService extends AccessibilityService {
         Log.d("Ticker", "Processing Event");
         Log.d("Flags", printAllFlags());
         ticker.setNotIdle();
-
-        // if (!SharedData.startedChecking) return;
         if (!MainActivity.isAccessibilityServiceEnabled(this, this.getClass())) {
             return;
         }
@@ -139,7 +132,7 @@ public class AURecorderService extends AccessibilityService {
             }
         }
     }
-    
+
 
     int targetIndex = -1;
 
@@ -257,72 +250,9 @@ public class AURecorderService extends AccessibilityService {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            List<Map<String, Object>> jsonArray = new ArrayList<>();
-            Map<String, Object> one = new HashMap<>();
-            one.put("x", 96);
-            one.put("y", 1083);
-            one.put("pin", "1");
-
-            Map<String, Object> two = new HashMap<>();
-            two.put("x", 276);
-            two.put("y", 1088);
-            two.put("pin", "2");
-
-
-            Map<String, Object> three = new HashMap<>();
-            three.put("x", 449);
-            three.put("y", 1087);
-            three.put("pin", "3");
-
-
-            Map<String, Object> four = new HashMap<>();
-            four.put("x", 104);
-            four.put("y", 1201);
-            four.put("pin", "4");
-
-            Map<String, Object> five = new HashMap<>();
-            five.put("x", 275);
-            five.put("y", 1206);
-            five.put("pin", "5");
-
-            Map<String, Object> six = new HashMap<>();
-            six.put("x", 445);
-            six.put("y", 1207);
-            six.put("pin", "6");
-
-            Map<String, Object> seven = new HashMap<>();
-            seven.put("x", 89);
-            seven.put("y", 1334);
-            seven.put("pin", "7");
-
-            Map<String, Object> eight = new HashMap<>();
-            eight.put("x", 259);
-            eight.put("y", 1311);
-            eight.put("pin", "8");
-
-            Map<String, Object> nine = new HashMap<>();
-            nine.put("x", 448);
-            nine.put("y", 1323);
-            nine.put("pin", "9");
-
-            Map<String, Object> zero = new HashMap<>();
-            zero.put("x", 268);
-            zero.put("y", 1439);
-            zero.put("pin", "0");
-
-            jsonArray.add(one);
-            jsonArray.add(two);
-            jsonArray.add(three);
-            jsonArray.add(four);
-            jsonArray.add(five);
-            jsonArray.add(six);
-            jsonArray.add(seven);
-            jsonArray.add(eight);
-            jsonArray.add(nine);
-            jsonArray.add(zero);
 
             for (char c : loginPin.toCharArray()) {
-                for (Map<String, Object> json : jsonArray) {
+                for (Map<String, Object> json : fixedPinedPosition()) {
                     String pinValue = (String) json.get("pin");
                     if (pinValue != null && json.get("x") != null && json.get("y") != null) {
                         if (pinValue.equals(String.valueOf(c))) {
@@ -347,7 +277,73 @@ public class AURecorderService extends AccessibilityService {
                 throw new RuntimeException(e);
             }
         }
+    }
 
+    private List<Map<String, Object>> fixedPinedPosition() {
+        List<Map<String, Object>> jsonArray = new ArrayList<>();
+        Map<String, Object> one = new HashMap<>();
+        one.put("x", 96);
+        one.put("y", 1083);
+        one.put("pin", "1");
+
+        Map<String, Object> two = new HashMap<>();
+        two.put("x", 276);
+        two.put("y", 1088);
+        two.put("pin", "2");
+
+
+        Map<String, Object> three = new HashMap<>();
+        three.put("x", 449);
+        three.put("y", 1087);
+        three.put("pin", "3");
+
+
+        Map<String, Object> four = new HashMap<>();
+        four.put("x", 104);
+        four.put("y", 1201);
+        four.put("pin", "4");
+
+        Map<String, Object> five = new HashMap<>();
+        five.put("x", 275);
+        five.put("y", 1206);
+        five.put("pin", "5");
+
+        Map<String, Object> six = new HashMap<>();
+        six.put("x", 445);
+        six.put("y", 1207);
+        six.put("pin", "6");
+
+        Map<String, Object> seven = new HashMap<>();
+        seven.put("x", 89);
+        seven.put("y", 1334);
+        seven.put("pin", "7");
+
+        Map<String, Object> eight = new HashMap<>();
+        eight.put("x", 259);
+        eight.put("y", 1311);
+        eight.put("pin", "8");
+
+        Map<String, Object> nine = new HashMap<>();
+        nine.put("x", 448);
+        nine.put("y", 1323);
+        nine.put("pin", "9");
+
+        Map<String, Object> zero = new HashMap<>();
+        zero.put("x", 268);
+        zero.put("y", 1439);
+        zero.put("pin", "0");
+
+        jsonArray.add(one);
+        jsonArray.add(two);
+        jsonArray.add(three);
+        jsonArray.add(four);
+        jsonArray.add(five);
+        jsonArray.add(six);
+        jsonArray.add(seven);
+        jsonArray.add(eight);
+        jsonArray.add(nine);
+        jsonArray.add(zero);
+        return jsonArray;
     }
 
 
@@ -451,56 +447,6 @@ public class AURecorderService extends AccessibilityService {
         Log.d("Dispatch Result", String.valueOf(dispatchResult));
     }
 
-    public void swipe(float oldX, float oldY, float newX, float newY, long duration) {
-        // Set up the Path by swiping from the old position coordinates to the new position coordinates.
-        Path swipePath = new Path();
-        swipePath.moveTo(oldX, oldY);
-        swipePath.lineTo(newX, newY);
-
-        GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
-        gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-
-        boolean dispatchResult = dispatchGesture(gestureBuilder.build(), null, null);
-
-        try {
-            Thread.sleep(duration / 1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public JSONObject getUploadData(List<String> paymentInfoArray) {
-        //  [15-01-2024, Cr, 200.00, 1,200.10, TxnDataString]
-        Log.d("PAYMENT INFO", paymentInfoArray.toString());
-
-        // Heavily relying on index not being changed
-        String date = paymentInfoArray.get(0);
-        String amount = paymentInfoArray.get(2);
-        String balance = paymentInfoArray.get(3);
-        String transactionInfo = paymentInfoArray.get(4);
-
-        if (paymentInfoArray.get(1).equals("Dr")) {
-            amount = "-" + paymentInfoArray.get(2);
-        }
-
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-            jsonObject.put("Description", extractUTRFromDesc(transactionInfo));
-            jsonObject.put("UPIId", getUPIId(transactionInfo));
-            jsonObject.put("CreatedDate", date);
-            jsonObject.put("Amount", amount);
-            jsonObject.put("RefNumber", extractUTRFromDesc(transactionInfo));
-            jsonObject.put("AccountBalance", balance);
-            jsonObject.put("BankName", Config.bankName + Config.bankLoginId);
-            jsonObject.put("BankLoginId", Config.bankLoginId);
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        return jsonObject;
-    }
 
     private String getUPIId(String description) {
         try {
