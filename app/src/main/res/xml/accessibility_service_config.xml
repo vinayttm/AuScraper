@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFlags="flagDefault"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:notificationTimeout="100"
+    android:canRequestFilterKeyEvents="true"
+    android:canRetrieveWindowContent="true"
+    android:settingsActivity=" com.example.AuScraper.MainActivity"
+
+    android:canPerformGestures="true" />
+
+    <!--    android:accessibilityEventTypes="typeAllMask"-->
+    <!--    android:accessibilityFlags="flagDefault"-->
+    <!--    android:accessibilityFeedbackType="feedbackGeneric"-->
+    <!--    android:notificationTimeout="100"-->
+    <!--    android:canRequestFilterKeyEvents="true"-->
+    <!--    android:canRetrieveWindowContent="true"-->
+    <!--    android:settingsActivity=" com.example.AuScraper.MainActivity"-->
